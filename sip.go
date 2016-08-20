@@ -14,17 +14,25 @@ type Message struct {
 	Fields map[fieldType][]string
 }
 
+/*
+
+// Valid returns true if Message is valid. That is, if the Type is not MsgUnknown, and
+// all the required fields are present. It does not validate that the contents of
+// the fields conforms to expected patterns.
 func (m Message) Valid() bool                  { return false }
 func (m Message) Field(t fieldType) []string   { return nil }
 func (m Message) HasField(t fieldType) bool    { return false }
 func (m Message) MustField(t fieldType) string { return "" }
+func (m Message) Encode(w io.Writer) error     { return nil }
+
+*/
 
 // msgType represents the request or response message type.
 type msgType int
 
 // All possible message types
 const (
-	MsgError msgType = iota
+	MsgUnknown msgType = iota
 	// Requests:
 	MsgReqPatronStatus      // 23
 	MsgReqCheckout          // 11
@@ -64,7 +72,7 @@ type fieldType int
 
 // All possible field types:
 const (
-	FieldError fieldType = iota
+	FieldUnknown fieldType = iota
 
 	// Fixed length fields identified by position in request/response header:
 	FieldAlert                 // 1 char: Y or N

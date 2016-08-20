@@ -15,32 +15,32 @@ var (
 	msgDefinitions = map[msgType]msgDef{
 		// Requests:
 		MsgReqPatronStatus: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldLanguage,
 				FieldTransactionDate,
 				FieldInstitutionID,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldPatronIdentifier,
 				FieldTerminalPassword,
 				FieldPatronPassword,
 			},
-			OptionalVar: {},
+			OptionalVar: []fieldType{},
 		},
 		MsgReqCheckout: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldRenewalPolicy,
 				FieldNoBlock,
 				FieldTransactionDate,
 				FieldNbDueDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldItemIdentifier,
 				FieldTerminalPassword,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldItemProperties,
 				FieldPatronPassword,
 				FieldFeeAcknowledged,
@@ -48,34 +48,34 @@ var (
 			},
 		},
 		MsgReqCheckin: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldNoBlock,
 				FieldTransactionDate,
 				FieldReturnDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldCurrentLocation,
 				FieldInstitutionID,
 				FieldItemIdentifier,
 				FieldTerminalPassword,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldItemProperties,
 				FieldCancel,
 			},
 		},
 		MsgReqBlockPatron: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldCardRetained,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldBlockedCardMsg,
 				FieldPatronIdentifier,
 				FieldTerminalPassword,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldCardRetained,
 				FieldTransactionDate,
 				FieldInstitutionID,
@@ -85,39 +85,39 @@ var (
 			},
 		},
 		MsgReqStatus: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldStatusCode,
 				FieldMaxPrintWidth,
 				FieldProtocolVersion,
 			},
-			RequiredVar: {},
-			OptionalVar: {},
+			RequiredVar: []fieldType{},
+			OptionalVar: []fieldType{},
 		},
 		MsgReqResend: msgDef{},
-		MsgLogin: msgDef{
-			RequiredFixed: {
+		MsgReqLogin: msgDef{
+			RequiredFixed: []fieldType{
 				FieldUIDAlgorithm,
 				FieldPWDAlgorithm,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldLoginUserID,
 				FieldLoginPassword,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldLocationCode,
 			},
 		},
 		MsgReqPatronInformation: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldLanguage,
 				FieldTransactionDate,
 				FieldSummary,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTerminalPassword,
 				FieldPatronPassword,
 				FieldStartItem,
@@ -125,28 +125,28 @@ var (
 			},
 		},
 		MsgReqEndPatronSession: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {},
+			OptionalVar: []fieldType{},
 		},
 		MsgReqFeePaid: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 				FieldFeeType,
 				FieldPaymentType,
 				FieldCurrenyType,
 				FieldFeeAmount,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTerminalPassword,
 				FieldPatronPassword,
 				FieldFeeIdentifier,
@@ -154,53 +154,53 @@ var (
 			},
 		},
 		MsgReqItemInformation: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldItemIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTerminalPassword,
 			},
 		},
 		MsgReqItemStatusUpdate: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldItemIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTerminalPassword,
 				FieldItemProperties,
 			},
 		},
 		MsgReqPatronEnable: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTerminalPassword,
 				FieldPatronPassword,
 			},
 		},
 		MsgReqHold: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldHoldMode,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldPickupLocation,
 				FieldExpirationDate,
 				FieldHoldType,
@@ -212,17 +212,17 @@ var (
 			},
 		},
 		MsgReqRenew: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldThirdPartyAllowd,
 				FieldNoBlock,
 				FieldTransactionDate,
 				FieldNbDueDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldPatronPassword,
 				FieldItemIdentifier,
 				FieldTitleIdentifier,
@@ -232,31 +232,32 @@ var (
 			},
 		},
 		MsgReqRenewAll: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldPatronPassword,
 				FieldTerminalPassword,
 				FieldFeeAcknowledged,
 			},
 		},
-		MsgRespStatus: msgDef{
-			RequiredFixed: {
+		// Responses:
+		MsgRespPatronStatus: msgDef{
+			RequiredFixed: []fieldType{
 				FieldPatronStatus,
 				FieldLanguage,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldPersonalName,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldValidPatron,
 				FieldValidPatronPassword,
 				FieldCurrenyType,
@@ -267,23 +268,22 @@ var (
 				FieldTerminalLocation,
 			},
 		},
-		// Responses:
 		MsgRespCheckout: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 				FieldRenewalOK,
 				FieldMagneticMedia,
 				FieldDesentisize,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldItemIdentifier,
 				FieldTitleIdentifier,
 				FieldDueDate,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldFeeType,
 				FieldSecurityInhibit,
 				FieldCurrenyType,
@@ -296,19 +296,19 @@ var (
 			},
 		},
 		MsgRespCheckin: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 				FieldResentisize,
 				FieldMagneticMedia,
 				FieldAlert,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldItemIdentifier,
 				FieldPermanentLocation,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTitleIdentifier,
 				FieldSortBin,
 				FieldMediaType,
@@ -318,7 +318,7 @@ var (
 			},
 		},
 		MsgRespStatus: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOnLineStatus,
 				FieldCheckinOK,
 				FieldCheckoutOK,
@@ -330,21 +330,21 @@ var (
 				FieldDateTimeSync,
 				FieldProtocolVersion,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldSupportedMessages,
 			},
-			OptionalVar: {},
+			OptionalVar: []fieldType{},
 		},
 		MsgRespLogin: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 			},
-			RequiredVar: {},
-			OptionalVar: {},
+			RequiredVar: []fieldType{},
+			OptionalVar: []fieldType{},
 		},
 		MsgRespPatronInformation: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldPatronStatus,
 				FieldLanguage,
 				FieldTransactionDate,
@@ -355,12 +355,12 @@ var (
 				FieldRecallItemsCount,
 				FieldUnavailableHoldsCount,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldPersonalName,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldHoldItemsLimit,
 				FieldOverdueItemsLimit,
 				FieldChargedItemsLimit,
@@ -383,43 +383,43 @@ var (
 			},
 		},
 		MsgRespEndPatronSession: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldEndSession,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldScreenMessage,
 				FieldPrintLine,
 			},
 		},
 		MsgRespFeePaid: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldPaymentAccepted,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTransactionID,
 				FieldScreenMessage,
 				FieldPrintLine,
 			},
 		},
 		MsgRespItemInformation: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldCirulationStatus,
 				FieldSecurityMarker,
 				FieldFeeType,
 				FieldTransactionDate,
 			},
-			RequiredVar: {},
-			OptionalVar: {
+			RequiredVar: []fieldType{},
+			OptionalVar: []fieldType{
 				FieldHoldQueueLength,
 				FieldDueDate,
 				FieldRecallDate,
@@ -437,15 +437,15 @@ var (
 				FieldPrintLine,
 			},
 		},
-		MsgRespStatusUpdate: msgDef{
-			RequiredFixed: {
+		MsgRespItemStatusUpdate: msgDef{
+			RequiredFixed: []fieldType{
 				FieldItemPropertiesOK,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldTitleIdentifier,
 				FieldItemProperties,
 				FieldScreenMessage,
@@ -453,17 +453,17 @@ var (
 			},
 		},
 		MsgRespPatronEnable: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldPatronStatus,
 				FieldLanguage,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldPersonalName,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldValidPatron,
 				FieldValidPatronPassword,
 				FieldScreenMessage,
@@ -471,16 +471,16 @@ var (
 			},
 		},
 		MsgRespHold: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 				FieldAvialable,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldExpirationDate,
 				FieldQueuePosition,
 				FieldPickupLocation,
@@ -491,21 +491,21 @@ var (
 			},
 		},
 		MsgRespRenew: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 				FieldRenewalOK,
 				FieldMagneticMedia,
 				FieldDesentisize,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 				FieldPatronIdentifier,
 				FieldItemIdentifier,
 				FieldTitleIdentifier,
 				FieldDueDate,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldFeeType,
 				FieldSecurityInhibit,
 				FieldFeeAmount,
@@ -517,16 +517,16 @@ var (
 			},
 		},
 		MsgRespRenewAll: msgDef{
-			RequiredFixed: {
+			RequiredFixed: []fieldType{
 				FieldOK,
 				FieldRenewedCount,
 				FieldUnrenewedCount,
 				FieldTransactionDate,
 			},
-			RequiredVar: {
+			RequiredVar: []fieldType{
 				FieldInstitutionID,
 			},
-			OptionalVar: {
+			OptionalVar: []fieldType{
 				FieldRenewedItems,
 				FieldUnrenewedItems,
 				FieldScreenMessage,
@@ -583,7 +583,41 @@ var (
 		FieldUnrenewedCount:        4,
 	}
 
-	msgToID = map[msgType]string{
+	// minMsgLength defines the minimum length needed for a Message to be valid.
+	minMsgLength = map[msgType]int{
+		MsgReqPatronStatus:       35, // 2+3+18+3+3+3+3
+		MsgReqCheckout:           52, // 2+1+1+18+18+3+3+3+3
+		MsgReqCheckin:            0,
+		MsgReqBlockPatron:        0,
+		MsgReqStatus:             0,
+		MsgReqResend:             0,
+		MsgReqLogin:              0,
+		MsgReqPatronInformation:  0,
+		MsgReqEndPatronSession:   0,
+		MsgReqFeePaid:            0,
+		MsgReqItemInformation:    0,
+		MsgReqItemStatusUpdate:   0,
+		MsgReqPatronEnable:       0,
+		MsgReqHold:               0,
+		MsgReqRenew:              0,
+		MsgReqRenewAll:           0,
+		MsgRespPatronStatus:      0,
+		MsgRespCheckout:          0,
+		MsgRespCheckin:           0,
+		MsgRespStatus:            0,
+		MsgRespLogin:             0,
+		MsgRespPatronInformation: 0,
+		MsgRespEndPatronSession:  0,
+		MsgRespFeePaid:           0,
+		MsgRespItemInformation:   0,
+		MsgRespItemStatusUpdate:  0,
+		MsgRespPatronEnable:      0,
+		MsgRespHold:              0,
+		MsgRespRenew:             0,
+		MsgRespRenewAll:          0,
+	}
+
+	msgToCode = map[msgType]string{
 		MsgReqPatronStatus:       "23",
 		MsgReqCheckout:           "11",
 		MsgReqCheckin:            "09",
@@ -616,7 +650,7 @@ var (
 		MsgRespRenewAll:          "66",
 	}
 
-	idToMsg = map[string]msgType{
+	codeToMsg = map[string]msgType{
 		"23": MsgReqPatronStatus,
 		"11": MsgReqCheckout,
 		"09": MsgReqCheckin,
@@ -649,7 +683,7 @@ var (
 		"66": MsgRespRenewAll,
 	}
 
-	fieldToID = map[fieldType]string{
+	fieldToCode = map[fieldType]string{
 		FieldPatronIdentifier:      "AA",
 		FieldItemIdentifier:        "AB",
 		FieldTerminalPassword:      "AC",
@@ -711,7 +745,7 @@ var (
 		FieldChecksum:              "AZ",
 	}
 
-	idToField = map[string]fieldType{
+	codeToField = map[string]fieldType{
 		"AA": FieldPatronIdentifier,
 		"AB": FieldItemIdentifier,
 		"AC": FieldTerminalPassword,
