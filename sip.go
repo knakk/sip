@@ -24,37 +24,39 @@ type msgType int
 
 // All possible message types
 const (
-	MsgError                 msgType = iota
-	MsgReqPatronStatus               // 23
-	MsgReqCheckout                   // 11
-	MsgReqCheckin                    // 09
-	MsgReqBlockPatron                // 01
-	MsgReqStatus                     // 99
-	MsgReqResend                     // 97
-	MsgReqLogin                      // 93
-	MsgReqPatronInformation          // 63
-	MsgReqEndPatronSession           // 35
-	MsgReqFeePaid                    // 37
-	MsgReqItemInformation            // 17
-	MsgReqItemStatusUpdate           // 19
-	MsgReqPatronEnable               // 25
-	MsgReqHold                       // 15
-	MsgReqRenew                      // 29
-	MsgReqRenewAll                   // 65
-	MsgRespPatronStatus              // 24
-	MsgRespCheckout                  // 12
-	MsgRespCheckin                   // 10
-	MsgRespStatus                    // 98
-	MsgRespLogin                     // 94
-	MsgRespPatronInformation         // 64
-	MsgRespEndPatronSession          // 36
-	MsgRespFeePaid                   // 38
-	MsgRespItemInformation           // 18
-	MsgRespItemStatusUpdate          // 20
-	MsgRespPatronEnable              // 26
-	MsgRespHold                      // 16
-	MsgRespRenew                     // 30
-	MsgRespRenewAll                  // 66
+	MsgError msgType = iota
+	// Requests:
+	MsgReqPatronStatus      // 23
+	MsgReqCheckout          // 11
+	MsgReqCheckin           // 09
+	MsgReqBlockPatron       // 01
+	MsgReqStatus            // 99
+	MsgReqResend            // 97
+	MsgReqLogin             // 93
+	MsgReqPatronInformation // 63
+	MsgReqEndPatronSession  // 35
+	MsgReqFeePaid           // 37
+	MsgReqItemInformation   // 17
+	MsgReqItemStatusUpdate  // 19
+	MsgReqPatronEnable      // 25
+	MsgReqHold              // 15
+	MsgReqRenew             // 29
+	MsgReqRenewAll          // 65
+	// Responses:
+	MsgRespPatronStatus      // 24
+	MsgRespCheckout          // 12
+	MsgRespCheckin           // 10
+	MsgRespStatus            // 98
+	MsgRespLogin             // 94
+	MsgRespPatronInformation // 64
+	MsgRespEndPatronSession  // 36
+	MsgRespFeePaid           // 38
+	MsgRespItemInformation   // 18
+	MsgRespItemStatusUpdate  // 20
+	MsgRespPatronEnable      // 26
+	MsgRespHold              // 16
+	MsgRespRenew             // 30
+	MsgRespRenewAll          // 66
 )
 
 // fieldType represents a request/response message field ID.
@@ -148,8 +150,8 @@ const (
 	FieldPickupLocation        // BS
 	FieldFeeType               // BT
 	FieldRecallItems           // BU
-	FieldFeeAmaunt             // BV
-	FieldExpirationDAte        // BW
+	FieldFeeAmount             // BV
+	FieldExpirationDate        // BW
 	FieldSupportedMessages     // BX
 	FieldHoldType              // BY
 	FieldHoldItemsLimit        // BZ
