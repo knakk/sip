@@ -22,12 +22,13 @@ func Decode(msg []byte) (Message, error) {
 		return m, fmt.Errorf("message too short to include required fields: %d < %d", len(msg), minMsgLength[m.Type])
 	}
 
-	m.Fields = make(map[fieldType][]string)
+	m.Fields = make(map[fieldType]string)
+	//m.RepeateableFields = make(map[fieldType][]string)
 
 	p := 2 // byte position in message
 	for _, f := range msgDefinitions[m.Type].RequiredFixed {
 		end := p + fixedFieldLengths[f] // end of token
-		m.Fields[f] = []string{string(msg[p:end])}
+		m.Fields[f] = string(msg[p:end])
 		p = end
 	}
 outer:
@@ -39,7 +40,7 @@ outer:
 			r, w := utf8.DecodeRune(msg[p:])
 			p += w
 			if r == '|' {
-				m.Fields[f] = []string{string(msg[start : p-1])}
+				m.Fields[f] = string(msg[start : p-1])
 				if p == len(msg) {
 					break outer
 				}

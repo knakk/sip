@@ -14,13 +14,13 @@ func TestDecodeMessages(t *testing.T) {
 			"2300019810908ZZZZ124533AOAcme co.|AAp123.xyz|ACsecret|ADpass|",
 			Message{
 				Type: MsgReqPatronStatus,
-				Fields: map[fieldType][]string{
-					FieldLanguage:         []string{"000"},
-					FieldTransactionDate:  []string{"19810908ZZZZ124533"},
-					FieldInstitutionID:    []string{"Acme co."},
-					FieldPatronIdentifier: []string{"p123.xyz"},
-					FieldTerminalPassword: []string{"secret"},
-					FieldPatronPassword:   []string{"pass"},
+				Fields: map[fieldType]string{
+					FieldLanguage:         "000",
+					FieldTransactionDate:  "19810908ZZZZ124533",
+					FieldInstitutionID:    "Acme co.",
+					FieldPatronIdentifier: "p123.xyz",
+					FieldTerminalPassword: "secret",
+					FieldPatronPassword:   "pass",
 				},
 			},
 		},

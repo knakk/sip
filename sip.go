@@ -10,8 +10,9 @@ package sip
 // A Message defines a request sent by the SC to the ACS, or the response
 // sent by the ACS to the SC. The Message Type defines which kind it is.
 type Message struct {
-	Type   msgType
-	Fields map[fieldType][]string
+	Type              msgType
+	Fields            map[fieldType]string
+	RepeateableFields map[fieldType][]string
 }
 
 /*
