@@ -6,11 +6,16 @@ import (
 	"unicode/utf8"
 )
 
-// Decode decodes a SIP message.
-// Decode does validate a SIP message according to the required fields, other
+// Decode decodes a SIP message from a byte slice.
+//
+// Decode does not check if SIP message has all the required fields, other
 // than an initial check of length to see if the message is long enough to
-// contain the required fields for the given message type. To validate a
-// Message use the Message.Validate() function.
+// contain the required fields for the given message type. Neither does
+// it validate that the contents of a field conforms to specification,
+// but fixed-length fields are guaranteed to have the required length.
+// To validate a Message call the Message.Validate() function.
+//
+// Fields which are not defined by the SIP protocol are ignored.
 func Decode(msg []byte) (Message, error) {
 	var m Message
 
