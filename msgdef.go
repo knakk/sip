@@ -556,7 +556,7 @@ var (
 		FieldLanguage:              3,
 		FieldMagneticMedia:         1,
 		FieldMaxPrintWidth:         3,
-		FieldNbDueDate:             1,
+		FieldNbDueDate:             18,
 		FieldNoBlock:               1,
 		FieldOffLineOK:             1,
 		FieldOK:                    1,

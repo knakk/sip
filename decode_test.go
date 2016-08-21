@@ -24,6 +24,22 @@ func TestDecodeMessages(t *testing.T) {
 				},
 			},
 		},
+		{
+			"11YN20131216    13531620131216    135316AO|AAN0012121212|ABix:1156620,1|ACsecret",
+			Message{
+				Type: MsgReqCheckout,
+				Fields: map[fieldType]string{
+					FieldRenewalPolicy:    "Y",
+					FieldNoBlock:          "N",
+					FieldTransactionDate:  "20131216    135316",
+					FieldNbDueDate:        "20131216    135316",
+					FieldInstitutionID:    "",
+					FieldPatronIdentifier: "N0012121212",
+					FieldItemIdentifier:   "ix:1156620,1",
+					FieldTerminalPassword: "secret",
+				},
+			},
+		},
 	}
 
 	for i, tt := range tests {
@@ -46,7 +62,7 @@ func TestDecodeErrors(t *testing.T) {
 		{"1\r", "message too short"},
 		{"xx", `unknown message code: "xx"`},
 		{"3301000120131216    140859ABix:664329,9|AJEgeland, Tom : Ulvenatten|", `unknown message code: "33"`},
-		{"2300019810908ZZZZ12453AO|AA|AC|AD|", "message too short to include required fields for MsgReqPatronStatus: 34 < 35"},
+		{"2300019810908ZZZZ12453AO|AA|AC|AD|", "message too short to contain required fields for MsgReqPatronStatus: 34 < 35"},
 	}
 
 	for i, tt := range tests {
