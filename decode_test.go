@@ -43,7 +43,7 @@ func TestDecodeErrors(t *testing.T) {
 		errString string
 	}{
 		{"", "message too short"},
-		{"1", "message too short"},
+		{"1\r", "message too short"},
 		{"xx", `unknown message code: "xx"`},
 		{"3301000120131216    140859ABix:664329,9|AJEgeland, Tom : Ulvenatten|", `unknown message code: "33"`},
 		{"2300019810908ZZZZ12453AO|AA|AC|AD|", "message too short to include required fields: 34 < 35"},
