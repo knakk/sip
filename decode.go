@@ -41,14 +41,17 @@ func Decode(msg []byte) (Message, error) {
 	}
 
 	m.Fields = make(map[fieldType]string)
-	//m.RepeateableFields = make(map[fieldType][]string)
+	m.RepeateableFields = make(map[fieldType][]string)
 
+	// Parse fixed-length fields:
 	p := 2 // byte position in message
 	for _, f := range msgDefinitions[m.Type].RequiredFixed {
 		end := p + fixedFieldLengths[f] // end of token
 		m.Fields[f] = string(msg[p:end])
 		p = end
 	}
+
+	// Parse variable-length fields:
 outer:
 	for {
 		start := p + 2 // start of current field
@@ -58,13 +61,21 @@ outer:
 			r, w := utf8.DecodeRune(msg[p:])
 			p += w
 			if r == '|' {
-				m.Fields[f] = string(msg[start : p-1])
+				if repeatableField[f] {
+					m.RepeateableFields[f] = append(m.RepeateableFields[f], string(msg[start:p-1]))
+				} else {
+					m.Fields[f] = string(msg[start : p-1])
+				}
 				if p == l {
 					break outer
 				}
 				continue outer
 			} else if p == l {
-				m.Fields[f] = string(msg[start:l])
+				if repeatableField[f] {
+					m.RepeateableFields[f] = append(m.RepeateableFields[f], string(msg[start:l]))
+				} else {
+					m.Fields[f] = string(msg[start:l])
+				}
 				break outer
 			}
 
@@ -72,5 +83,4 @@ outer:
 	}
 
 	return m, nil
-
 }

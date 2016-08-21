@@ -617,6 +617,19 @@ var (
 		MsgRespRenewAll:          0,
 	}
 
+	repeatableField = map[fieldType]bool{
+		FieldScreenMessage:         true,
+		FieldPrintLine:             true,
+		FieldRenewedItems:          true,
+		FieldUnrenewedItems:        true,
+		FieldHoldItems:             true,
+		FieldOverdueItems:          true,
+		FieldChargedItems:          true,
+		FieldFineItems:             true,
+		FieldRecallItems:           true,
+		FieldUnavailableHoldsItems: true,
+	}
+
 	msgToCode = map[msgType]string{
 		MsgReqPatronStatus:       "23",
 		MsgReqCheckout:           "11",
