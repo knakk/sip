@@ -32,7 +32,7 @@ func Decode(msg []byte) (Message, error) {
 	}
 
 	if l < minMsgLength[m.Type] {
-		return m, fmt.Errorf("message too short to include required fields: %d < %d", len(msg), minMsgLength[m.Type])
+		return m, fmt.Errorf("message too short to include required fields for %v: %d < %d", m.Type, len(msg), minMsgLength[m.Type])
 	}
 
 	m.Fields = make(map[fieldType]string)
