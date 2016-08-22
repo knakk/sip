@@ -7,6 +7,8 @@
 
 package sip
 
+import "fmt"
+
 // A Message defines a request sent by the SC to the ACS, or the response
 // sent by the ACS to the SC. The Message Type defines which kind it is.
 type Message struct {
@@ -19,7 +21,7 @@ type Message struct {
 
 // Valid returns true if Message is valid. That is, if the Type is not MsgUnknown, and
 // all the required fields are present. It does not validate that the contents of
-// the fields conforms to expected patterns.
+// the fields conforms to expected patterns; use Validate() for that.
 func (m Message) Valid() bool                  { return false }
 func (m Message) Field(t fieldType) []string   { return nil }
 func (m Message) HasField(t fieldType) bool    { return false }
@@ -27,6 +29,54 @@ func (m Message) MustField(t fieldType) string { return "" }
 func (m Message) Encode(w io.Writer) error     { return nil }
 
 */
+
+func (m Message) hasField(f fieldType) bool {
+	_, ok := m.Fields[f]
+	return ok
+}
+
+// Validate validates a SIP message. It returns a slice of strings
+// listing the violations of the SIP protocol for the given message type.
+func (m Message) Validate() []string {
+	errs := []string{}
+	if m.Type == MsgUnknown {
+		errs = append(errs, "unknown message type")
+		return errs
+	}
+
+	for _, f := range msgDefinitions[m.Type].RequiredFixed {
+		if !m.hasField(f) {
+			errs = append(errs, fmt.Sprintf("missing required fixed-length field: %v", f))
+			continue
+		}
+		if rxp := fieldValdiation[f]; rxp != nil {
+			if v, ok := m.Fields[f]; ok && !rxp.MatchString(v) {
+				errs = append(errs, fmt.Sprintf("fixed-length field %v with value %q does not match %v",
+					f, v, rxp))
+			}
+		}
+	}
+
+	for _, f := range msgDefinitions[m.Type].RequiredVar {
+		if !m.hasField(f) {
+			errs = append(errs, fmt.Sprintf("missing required variable-length field: %v", f))
+			continue
+		}
+		if rxp := fieldValdiation[f]; rxp != nil {
+			if v, ok := m.Fields[f]; ok && !rxp.MatchString(v) {
+				errs = append(errs, fmt.Sprintf("variable-length field %v with value %q does not match %v",
+					f, v, rxp))
+			}
+		}
+	}
+
+	// TODO repeatable fields are never required?
+	/*for _, f := range m.RepeateableFields {
+
+	}*/
+
+	return errs
+}
 
 // msgType represents the request or response message type.
 type msgType int

@@ -543,6 +543,7 @@ var (
 		FieldCardRetained:          1,
 		FieldChargedItemsCount:     4,
 		FieldFineItemsCount:        4,
+		FieldFeeType:               2,
 		FieldHoldItemsCount:        4,
 		FieldOverdueItemsCount:     4,
 		FieldRecallItemsCount:      4,
@@ -574,6 +575,7 @@ var (
 		FieldRetriesAllowd:         3,
 		FieldReturnDate:            18,
 		FieldRenewalPolicy:         1,
+		FieldSecurityInhibit:       1,
 		FieldSecurityMarker:        2,
 		FieldStatusCode:            1,
 		FieldStatusUpdateOK:        1,
@@ -585,9 +587,10 @@ var (
 		FieldUnrenewedCount:        4,
 	}
 
-	rxpYesNo     = regexp.MustCompile(`Y|N`)
-	rxpDigits    = regexp.MustCompile(`\d+$`)
-	rxpTimestamp = regexp.MustCompile(`\d{8}[\sZ\d]{4}\d{6}`) // TODO verify with ANSI standard X3.30 for date and X3.43 for time.
+	rxpYesNo         = regexp.MustCompile(`Y|N`)
+	rxpDigits        = regexp.MustCompile(`\d+$`)
+	rxpDigitsOrBlank = regexp.MustCompile(`[\d\s]+$`)
+	rxpTimestamp     = regexp.MustCompile(`\d{8}[\sZ\d]{4}\d{6}`) // TODO verify with ANSI standard X3.30 for date and X3.43 for time.
 
 	// fieldValidation defines the allowed character patterns for fields. If a fieldType
 	// is not present in this map, any string is allowed.
@@ -595,12 +598,12 @@ var (
 		FieldAlert:                 rxpYesNo,
 		FieldAvialable:             rxpYesNo,
 		FieldCardRetained:          rxpYesNo,
-		FieldChargedItemsCount:     rxpDigits, // {4}
-		FieldFineItemsCount:        rxpDigits, // {4}
-		FieldHoldItemsCount:        rxpDigits, // {4}
-		FieldOverdueItemsCount:     rxpDigits, // {4}
-		FieldRecallItemsCount:      rxpDigits, // {4}
-		FieldUnavailableHoldsCount: rxpDigits, // {4}
+		FieldChargedItemsCount:     rxpDigitsOrBlank, // {4}
+		FieldFineItemsCount:        rxpDigitsOrBlank, // {4}
+		FieldHoldItemsCount:        rxpDigitsOrBlank, // {4}
+		FieldOverdueItemsCount:     rxpDigitsOrBlank, // {4}
+		FieldRecallItemsCount:      rxpDigitsOrBlank, // {4}
+		FieldUnavailableHoldsCount: rxpDigitsOrBlank, // {4}
 		FieldCheckinOK:             rxpYesNo,
 		FieldCheckoutOK:            rxpYesNo,
 		FieldCirulationStatus:      rxpDigits, // {2}
