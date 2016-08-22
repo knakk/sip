@@ -1,5 +1,7 @@
 package sip
 
+import "regexp"
+
 // msgDef definies the required and optional fields of a message.
 type msgDef struct {
 	// Required fixed-length fields, identified by position in header.
@@ -581,6 +583,57 @@ var (
 		FieldTransactionDate:       18,
 		FieldUIDAlgorithm:          1,
 		FieldUnrenewedCount:        4,
+	}
+
+	rxpYesNo     = regexp.MustCompile(`Y|N`)
+	rxpDigits    = regexp.MustCompile(`\d+$`)
+	rxpTimestamp = regexp.MustCompile(`\d{8}[\sZ\d]{4}\d{6}`) // TODO verify with ANSI standard X3.30 for date and X3.43 for time.
+
+	// fieldValidation defines the allowed character patterns for fields. If a fieldType
+	// is not present in this map, any string is allowed.
+	fieldValdiation = map[fieldType]*regexp.Regexp{
+		FieldAlert:                 rxpYesNo,
+		FieldAvialable:             rxpYesNo,
+		FieldCardRetained:          rxpYesNo,
+		FieldChargedItemsCount:     rxpDigits, // {4}
+		FieldFineItemsCount:        rxpDigits, // {4}
+		FieldHoldItemsCount:        rxpDigits, // {4}
+		FieldOverdueItemsCount:     rxpDigits, // {4}
+		FieldRecallItemsCount:      rxpDigits, // {4}
+		FieldUnavailableHoldsCount: rxpDigits, // {4}
+		FieldCheckinOK:             rxpYesNo,
+		FieldCheckoutOK:            rxpYesNo,
+		FieldCirulationStatus:      rxpDigits, // {2}
+		FieldDateTimeSync:          rxpTimestamp,
+		FieldDesentisize:           regexp.MustCompile(`Y|N|U`),
+		FieldEndSession:            rxpYesNo,
+		FieldHoldMode:              regexp.MustCompile(`\+|\-|\*`),
+		FieldLanguage:              rxpDigits, // {3}
+		FieldMagneticMedia:         regexp.MustCompile(`Y|N|U`),
+		FieldMaxPrintWidth:         rxpDigits, // {3}
+		FieldNbDueDate:             rxpTimestamp,
+		FieldNoBlock:               rxpYesNo,
+		FieldOffLineOK:             rxpYesNo,
+		FieldOK:                    regexp.MustCompile(`0|1`),
+		FieldOnLineStatus:          rxpYesNo,
+		FieldPatronStatus:          regexp.MustCompile(`[\s|Y]{14}`),
+		FieldPaymentAccepted:       rxpYesNo,
+		FieldPaymentType:           rxpDigits, // {2}
+		FieldProtocolVersion:       regexp.MustCompile(`\d\.\d{20`),
+		FieldRenewalOK:             rxpYesNo,
+		FieldRenewedCount:          rxpDigits, // {4}
+		FieldResentisize:           rxpYesNo,
+		FieldRetriesAllowd:         rxpDigits, // {3}
+		FieldReturnDate:            rxpTimestamp,
+		FieldRenewalPolicy:         rxpYesNo,
+		FieldSecurityMarker:        rxpDigits, // {2}
+		FieldStatusCode:            regexp.MustCompile(`0|1|2`),
+		FieldStatusUpdateOK:        rxpYesNo,
+		FieldSummary:               regexp.MustCompile(`[\sY]{10}`),
+		FieldThirdPartyAllowd:      rxpYesNo,
+		FieldTimeoutPeriod:         rxpDigits, // {3}
+		FieldTransactionDate:       rxpTimestamp,
+		FieldUnrenewedCount:        rxpDigits, // {4}
 	}
 
 	// minMsgLength defines the minimum length needed for a Message to be able to contain
