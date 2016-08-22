@@ -583,38 +583,40 @@ var (
 		FieldUnrenewedCount:        4,
 	}
 
-	// minMsgLength defines the minimum length needed for a Message to be valid.
+	// minMsgLength defines the minimum length needed for a Message to be able to contain
+	// all the required fields. Variable-length fields are given a count of 3: a 2-character
+	// code plus delimiter.
 	minMsgLength = map[msgType]int{
 		MsgReqPatronStatus:       35, // 2+3+18+3+3+3+3
 		MsgReqCheckout:           52, // 2+1+1+18+18+3+3+3+3
-		MsgReqCheckin:            0,
-		MsgReqBlockPatron:        0,
-		MsgReqStatus:             0,
-		MsgReqResend:             0,
-		MsgReqLogin:              0,
-		MsgReqPatronInformation:  0,
-		MsgReqEndPatronSession:   0,
-		MsgReqFeePaid:            0,
-		MsgReqItemInformation:    0,
-		MsgReqItemStatusUpdate:   0,
-		MsgReqPatronEnable:       0,
-		MsgReqHold:               0,
-		MsgReqRenew:              0,
-		MsgReqRenewAll:           0,
-		MsgRespPatronStatus:      0,
-		MsgRespCheckout:          0,
-		MsgRespCheckin:           0,
-		MsgRespStatus:            0,
-		MsgRespLogin:             0,
-		MsgRespPatronInformation: 0,
-		MsgRespEndPatronSession:  0,
-		MsgRespFeePaid:           0,
-		MsgRespItemInformation:   0,
-		MsgRespItemStatusUpdate:  0,
-		MsgRespPatronEnable:      0,
-		MsgRespHold:              0,
-		MsgRespRenew:             0,
-		MsgRespRenewAll:          0,
+		MsgReqCheckin:            51, // 2+1+18+18+3+3+3+3
+		MsgReqBlockPatron:        33, // 2+1+18+3+3+3+3
+		MsgReqStatus:             10, // 2+1+3+4
+		MsgReqResend:             2,  // 2
+		MsgReqLogin:              10, // 2+1+1+3+3
+		MsgReqPatronInformation:  45, // 2+3+18+10+3+3+3+3
+		MsgReqEndPatronSession:   32, // 2+18+3+3+3+3
+		MsgReqFeePaid:            36, // 2+18+2+2+3+3+3+3
+		MsgReqItemInformation:    26, // 2+18+3+3
+		MsgReqItemStatusUpdate:   29, // 2+18+3+3+3
+		MsgReqPatronEnable:       26, // 2+18+3+3
+		MsgReqHold:               45, // 2+1+18+18+3+3
+		MsgReqRenew:              46, // 2+1+1+18+18+3+3
+		MsgReqRenewAll:           26, // 2+18+3+3
+		MsgRespPatronStatus:      46, // 2+14+3+18+3+3+3
+		MsgRespCheckout:          39, // 2+1+1+1+1+18+3+3+3+3+3
+		MsgRespCheckin:           33, // 2+1+1+1+1+18+3+3+3
+		MsgRespStatus:            42, // 2+1+1+1+1+1+1+3+3+18+4+3+3
+		MsgRespLogin:             3,  // 2+1
+		MsgRespPatronInformation: 70, // 2+14+3+18+4+4+4+4+4+4+3+3+3
+		MsgRespEndPatronSession:  27, // 2+1+18+3+3
+		MsgRespFeePaid:           27, // 2+1+18+3+3
+		MsgRespItemInformation:   32, // 2+2+2+2+18+3+3
+		MsgRespItemStatusUpdate:  24, // 2+1+18+3
+		MsgRespPatronEnable:      46, // 2+14+3+18+3+3+3
+		MsgRespHold:              28, // 2+1+1+18+3+3
+		MsgRespRenew:             39, // 2+1+1+1+1+18+3+3+3+3+3
+		MsgRespRenewAll:          32, // 2+1+4+4+18+3
 	}
 
 	repeatableField = map[fieldType]bool{
