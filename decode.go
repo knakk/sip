@@ -31,23 +31,23 @@ func Decode(msg []byte) (Message, error) {
 		return m, errors.New("message too short")
 	}
 
-	m.Type = codeToMsg[string(msg[:2])]
-	if m.Type == MsgUnknown {
+	m.typ = codeToMsg[string(msg[:2])]
+	if m.typ == MsgUnknown {
 		return m, fmt.Errorf("unknown message code: %q", string(msg[:2]))
 	}
 
-	if l < minMsgLength[m.Type] {
-		return m, fmt.Errorf("message too short to contain required fields for %v: %d < %d", m.Type, len(msg), minMsgLength[m.Type])
+	if l < minMsgLength[m.typ] {
+		return m, fmt.Errorf("message too short to contain required fields for %v: %d < %d", m.typ, len(msg), minMsgLength[m.typ])
 	}
 
-	m.Fields = make(map[fieldType]string)
-	m.RepeateableFields = make(map[fieldType][]string)
+	m.fields = make(map[fieldType]string)
+	m.repeateableFields = make(map[fieldType][]string)
 
 	// Parse fixed-length fields:
 	p := 2 // byte position in message
-	for _, f := range msgDefinitions[m.Type].RequiredFixed {
+	for _, f := range msgDefinitions[m.typ].RequiredFixed {
 		end := p + fixedFieldLengths[f] // end of token
-		m.Fields[f] = string(msg[p:end])
+		m.fields[f] = string(msg[p:end])
 		p = end
 	}
 
@@ -67,9 +67,9 @@ outer:
 			p += w
 			if r == '|' {
 				if repeatableField[f] {
-					m.RepeateableFields[f] = append(m.RepeateableFields[f], string(msg[start:p-1]))
+					m.repeateableFields[f] = append(m.repeateableFields[f], string(msg[start:p-1]))
 				} else {
-					m.Fields[f] = string(msg[start : p-1])
+					m.fields[f] = string(msg[start : p-1])
 				}
 				if p == l {
 					break outer
@@ -77,9 +77,9 @@ outer:
 				continue outer
 			} else if p == l {
 				if repeatableField[f] {
-					m.RepeateableFields[f] = append(m.RepeateableFields[f], string(msg[start:l]))
+					m.repeateableFields[f] = append(m.repeateableFields[f], string(msg[start:l]))
 				} else {
-					m.Fields[f] = string(msg[start:l])
+					m.fields[f] = string(msg[start:l])
 				}
 				break outer
 			}

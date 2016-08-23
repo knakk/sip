@@ -17,10 +17,42 @@ import (
 // sent by the ACS to the SC. The Message Type defines which kind it is.
 type Message struct {
 	// TODO make theese unexported when getters/setters done
-	Type              msgType
-	Fields            map[fieldType]string
-	RepeateableFields map[fieldType][]string
+	typ               msgType
+	fields            map[fieldType]string
+	repeateableFields map[fieldType][]string
 }
+
+// Field is a component of a SIP message, consiting of a type and a string value.
+type Field struct {
+	Type  fieldType
+	Value string
+}
+
+// NewMessage returns a new Message with the give message type.
+func NewMessage(f msgType) Message {
+	return Message{
+		typ:               f,
+		fields:            make(map[fieldType]string),
+		repeateableFields: make(map[fieldType][]string),
+	}
+}
+
+// AddField adds a field to the Message. If the field is not repeatable, it
+// will overwrite any existing value for the field.
+func (m Message) AddField(fs ...Field) {
+	for _, f := range fs {
+		if repeatableField[f.Type] {
+			m.repeateableFields[f.Type] = append(m.repeateableFields[f.Type], f.Value)
+		} else {
+			m.fields[f.Type] = f.Value
+		}
+	}
+}
+
+/* TODO
+func (m Message) Field(f fieldType) (string, bool) { return "", false }
+func (m Message) Fields(f fieldType) []string      { return nil }
+*/
 
 // Encode encodes a SIP messgae to a stream.
 // It will fail if there are missing required fields, or if
@@ -29,21 +61,21 @@ type Message struct {
 // optional for the give type are not encoded.
 func (m Message) Encode(w io.Writer) error {
 	bw := bufio.NewWriter(w)
-	if _, err := bw.WriteString(msgToCode[m.Type]); err != nil {
+	if _, err := bw.WriteString(msgToCode[m.typ]); err != nil {
 		return err
 	}
 
-	for _, f := range msgDefinitions[m.Type].RequiredFixed {
+	for _, f := range msgDefinitions[m.typ].RequiredFixed {
 		if !m.hasField(f) {
 			return fmt.Errorf("missing required fixed-length field: %v", f)
 		}
 
-		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+		if _, err := bw.WriteString(m.fields[f]); err != nil {
 			return err
 		}
 	}
 
-	for _, f := range msgDefinitions[m.Type].RequiredVar {
+	for _, f := range msgDefinitions[m.typ].RequiredVar {
 		if !m.hasField(f) { // TODO leave out?
 			return fmt.Errorf("missing required variable-length field: %v", f)
 		}
@@ -52,7 +84,7 @@ func (m Message) Encode(w io.Writer) error {
 			return err
 		}
 
-		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+		if _, err := bw.WriteString(m.fields[f]); err != nil {
 			return err
 		}
 
@@ -61,7 +93,7 @@ func (m Message) Encode(w io.Writer) error {
 		}
 	}
 
-	for _, f := range msgDefinitions[m.Type].OptionalVar {
+	for _, f := range msgDefinitions[m.typ].OptionalVar {
 		if !m.hasField(f) {
 			continue
 		}
@@ -70,7 +102,7 @@ func (m Message) Encode(w io.Writer) error {
 			return err
 		}
 
-		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+		if _, err := bw.WriteString(m.fields[f]); err != nil {
 			return err
 		}
 
@@ -79,8 +111,8 @@ func (m Message) Encode(w io.Writer) error {
 		}
 	}
 
-	for f, fs := range m.RepeateableFields {
-		if !isOptional(m.Type, f) {
+	for f, fs := range m.repeateableFields {
+		if !isOptional(m.typ, f) {
 			continue
 		}
 
@@ -108,7 +140,7 @@ func (m Message) Encode(w io.Writer) error {
 }
 
 func (m Message) hasField(f fieldType) bool {
-	_, ok := m.Fields[f]
+	_, ok := m.fields[f]
 	return ok
 }
 
@@ -116,31 +148,31 @@ func (m Message) hasField(f fieldType) bool {
 // listing the violations of the SIP protocol for the given message type.
 func (m Message) Validate() []string {
 	errs := []string{}
-	if m.Type == MsgUnknown {
+	if m.typ == MsgUnknown {
 		errs = append(errs, "unknown message type")
 		return errs
 	}
 
-	for _, f := range msgDefinitions[m.Type].RequiredFixed {
+	for _, f := range msgDefinitions[m.typ].RequiredFixed {
 		if !m.hasField(f) {
 			errs = append(errs, fmt.Sprintf("missing required fixed-length field: %v", f))
 			continue
 		}
 		if rxp := fieldValdiation[f]; rxp != nil {
-			if v, ok := m.Fields[f]; ok && !rxp.MatchString(v) {
+			if v, ok := m.fields[f]; ok && !rxp.MatchString(v) {
 				errs = append(errs, fmt.Sprintf("fixed-length field %v with value %q does not match %v",
 					f, v, rxp))
 			}
 		}
 	}
 
-	for _, f := range msgDefinitions[m.Type].RequiredVar {
+	for _, f := range msgDefinitions[m.typ].RequiredVar {
 		if !m.hasField(f) {
 			errs = append(errs, fmt.Sprintf("missing required variable-length field: %v", f))
 			continue
 		}
 		if rxp := fieldValdiation[f]; rxp != nil {
-			if v, ok := m.Fields[f]; ok && !rxp.MatchString(v) {
+			if v, ok := m.fields[f]; ok && !rxp.MatchString(v) {
 				errs = append(errs, fmt.Sprintf("variable-length field %v with value %q does not match %v",
 					f, v, rxp))
 			}

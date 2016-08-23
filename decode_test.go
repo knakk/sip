@@ -14,8 +14,8 @@ func TestDecodeMessages(t *testing.T) {
 		{
 			"2300019810908ZZZZ124533AOAcme co.|AAp123.xyz|ACsecret|ADpass|",
 			Message{
-				Type: MsgReqPatronStatus,
-				Fields: map[fieldType]string{
+				typ: MsgReqPatronStatus,
+				fields: map[fieldType]string{
 					FieldLanguage:         "000",
 					FieldTransactionDate:  "19810908ZZZZ124533",
 					FieldInstitutionID:    "Acme co.",
@@ -23,14 +23,14 @@ func TestDecodeMessages(t *testing.T) {
 					FieldTerminalPassword: "secret",
 					FieldPatronPassword:   "pass",
 				},
-				RepeateableFields: map[fieldType][]string{},
+				repeateableFields: map[fieldType][]string{},
 			},
 		},
 		{
 			"11YN20131216    13531620131216    135316AO|AAN0012121212|ABix:1156620,1|ACsecret",
 			Message{
-				Type: MsgReqCheckout,
-				Fields: map[fieldType]string{
+				typ: MsgReqCheckout,
+				fields: map[fieldType]string{
 					FieldRenewalPolicy:    "Y",
 					FieldNoBlock:          "N",
 					FieldTransactionDate:  "20131216    135316",
@@ -40,14 +40,14 @@ func TestDecodeMessages(t *testing.T) {
 					FieldItemIdentifier:   "ix:1156620,1",
 					FieldTerminalPassword: "secret",
 				},
-				RepeateableFields: map[fieldType][]string{},
+				repeateableFields: map[fieldType][]string{},
 			},
 		},
 		{
 			"120NNN20131216    140902AO|AAN000000001|ABRECEIPT|AJ|AH|AG DEICHMANSKE BIBLIOTEK|AG FURUSET|AG Tlf: 23 47 90 12|AG furu@deichman.no|AG www.deichman.no|AG|AGKvittering for utlån 16/12/2013|AGLånenummer: N000000001|AG|AG                  : Take this waltz |AG  (1357155.005) forfall : 23/12/2013|AG Dahl, Kjell Ola  : Svart engel : kr|AG  (766342.026) forfall : 13/01/2014|AG Egeland, Tom     : Ulvenatten : thr|AG  (664329.009) forfall : 13/01/2014|AG|AGTakk for besøket.|AG|AG|AG|AG|",
 			Message{
-				Type: MsgRespCheckout,
-				Fields: map[fieldType]string{
+				typ: MsgRespCheckout,
+				fields: map[fieldType]string{
 					// fixed-length fields:
 					FieldOK:              "0",
 					FieldRenewalOK:       "N",
@@ -61,7 +61,7 @@ func TestDecodeMessages(t *testing.T) {
 					FieldTitleIdentifier:  "",
 					FieldDueDate:          "",
 				},
-				RepeateableFields: map[fieldType][]string{
+				repeateableFields: map[fieldType][]string{
 					FieldPrintLine: []string{
 						" DEICHMANSKE BIBLIOTEK",
 						" FURUSET",
@@ -91,8 +91,8 @@ func TestDecodeMessages(t *testing.T) {
 		{
 			"101YNY20160822    153450AO|ABix:1544245,1|AQ|AJHellström, Jenny : Sy! Urban collection [Bok]|AAxyz|AF|ZPkreps|",
 			Message{
-				Type: MsgRespCheckin,
-				Fields: map[fieldType]string{
+				typ: MsgRespCheckin,
+				fields: map[fieldType]string{
 					FieldOK:                "1",
 					FieldResentisize:       "Y",
 					FieldMagneticMedia:     "N",
@@ -105,7 +105,7 @@ func TestDecodeMessages(t *testing.T) {
 					FieldPatronIdentifier:  "xyz",
 					FieldUnknown:           "ZPkreps",
 				},
-				RepeateableFields: map[fieldType][]string{
+				repeateableFields: map[fieldType][]string{
 					FieldScreenMessage: []string{""},
 				},
 			},
@@ -155,8 +155,8 @@ func TestEncode(t *testing.T) {
 	}{
 		{
 			Message{
-				Type: MsgRespCheckin,
-				Fields: map[fieldType]string{
+				typ: MsgRespCheckin,
+				fields: map[fieldType]string{
 					FieldOK:                "1",
 					FieldResentisize:       "Y",
 					FieldMagneticMedia:     "N",
@@ -169,7 +169,7 @@ func TestEncode(t *testing.T) {
 					FieldPatronIdentifier:  "xyz",
 					FieldUnknown:           "ZPkreps",
 				},
-				RepeateableFields: map[fieldType][]string{
+				repeateableFields: map[fieldType][]string{
 					FieldScreenMessage: []string{""},
 				},
 			},
