@@ -595,6 +595,7 @@ var (
 
 	// fieldValidation defines the allowed character patterns for fields. If a fieldType
 	// is not present in this map, any string is allowed.
+	// The string length is allways guaranted to be correct by the parser, so it is not included in the regexes.
 	fieldValdiation = map[fieldType]*regexp.Regexp{
 		FieldAlert:                 rxpYesNo,
 		FieldAvialable:             rxpYesNo,

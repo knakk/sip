@@ -234,7 +234,7 @@ type fieldType int
 const (
 	FieldUnknown fieldType = iota
 
-	// Fixed length fields identified by position in request/response header:
+	// Fixed length fields:
 	FieldAlert                 // 1 char: Y or N
 	FieldAvialable             // 1 char: Y or N
 	FieldCardRetained          // 1 char: Y or N
@@ -281,7 +281,7 @@ const (
 	FieldUIDAlgorithm          // 1 char: 0=not encrypted
 	FieldUnrenewedCount        // 4 char: 0000 to 9999
 
-	// Variable length fields identified by a two-character code:
+	// Variable length fields:
 	FieldPatronIdentifier      // AA
 	FieldItemIdentifier        // AB
 	FieldTerminalPassword      // AC
