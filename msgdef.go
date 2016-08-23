@@ -313,6 +313,7 @@ var (
 			OptionalVar: []fieldType{
 				FieldTitleIdentifier,
 				FieldSortBin,
+				FieldPatronIdentifier,
 				FieldMediaType,
 				FieldItemProperties,
 				FieldScreenMessage,
@@ -878,3 +879,12 @@ var (
 		"AZ": FieldChecksum,
 	}
 )
+
+func isOptional(mt msgType, ft fieldType) bool {
+	for _, f := range msgDefinitions[mt].OptionalVar {
+		if f == ft {
+			return true
+		}
+	}
+	return false
+}

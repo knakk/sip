@@ -57,6 +57,11 @@ outer:
 		start := p + 2 // start of current field
 		f := codeToField[string(msg[p:start])]
 		p = start
+		if f == FieldUnknown {
+			// store unknown codes in message value
+			start -= 2
+		}
+
 		for {
 			r, w := utf8.DecodeRune(msg[p:])
 			p += w

@@ -1,6 +1,7 @@
 package sip
 
 import (
+	"bytes"
 	"reflect"
 	"testing"
 )
@@ -87,6 +88,28 @@ func TestDecodeMessages(t *testing.T) {
 				},
 			},
 		},
+		{
+			"101YNY20160822    153450AO|ABix:1544245,1|AQ|AJHellström, Jenny : Sy! Urban collection [Bok]|AAxyz|AF|ZPkreps|",
+			Message{
+				Type: MsgRespCheckin,
+				Fields: map[fieldType]string{
+					FieldOK:                "1",
+					FieldResentisize:       "Y",
+					FieldMagneticMedia:     "N",
+					FieldAlert:             "Y",
+					FieldTransactionDate:   "20160822    153450",
+					FieldInstitutionID:     "",
+					FieldItemIdentifier:    "ix:1544245,1",
+					FieldPermanentLocation: "",
+					FieldTitleIdentifier:   "Hellström, Jenny : Sy! Urban collection [Bok]",
+					FieldPatronIdentifier:  "xyz",
+					FieldUnknown:           "ZPkreps",
+				},
+				RepeateableFields: map[fieldType][]string{
+					FieldScreenMessage: []string{""},
+				},
+			},
+		},
 	}
 
 	for i, tt := range tests {
@@ -100,6 +123,7 @@ func TestDecodeMessages(t *testing.T) {
 		}
 	}
 }
+
 func TestDecodeErrors(t *testing.T) {
 	tests := []struct {
 		input     string
@@ -120,6 +144,47 @@ func TestDecodeErrors(t *testing.T) {
 		}
 		if err.Error() != tt.errString {
 			t.Errorf("%d: got %q; want %q", i, err.Error(), tt.errString)
+		}
+	}
+}
+
+func TestEncode(t *testing.T) {
+	tests := []struct {
+		msg  Message
+		want string
+	}{
+		{
+			Message{
+				Type: MsgRespCheckin,
+				Fields: map[fieldType]string{
+					FieldOK:                "1",
+					FieldResentisize:       "Y",
+					FieldMagneticMedia:     "N",
+					FieldAlert:             "Y",
+					FieldTransactionDate:   "20160822    153450",
+					FieldInstitutionID:     "",
+					FieldItemIdentifier:    "ix:1544245,1",
+					FieldPermanentLocation: "",
+					FieldTitleIdentifier:   "Hellström, Jenny : Sy! Urban collection [Bok]",
+					FieldPatronIdentifier:  "xyz",
+					FieldUnknown:           "ZPkreps",
+				},
+				RepeateableFields: map[fieldType][]string{
+					FieldScreenMessage: []string{""},
+				},
+			},
+			"101YNY20160822    153450AO|ABix:1544245,1|AQ|AJHellström, Jenny : Sy! Urban collection [Bok]|AAxyz|AF|\r",
+		},
+	}
+
+	for i, tt := range tests {
+		var b bytes.Buffer
+		if err := tt.msg.Encode(&b); err != nil {
+			t.Errorf("%d: encode failed: %v", i, err)
+			continue
+		}
+		if b.String() != tt.want {
+			t.Errorf("%d: got:\n%q\nwant:\n%q", i, b.String(), tt.want)
 		}
 	}
 }

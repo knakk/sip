@@ -7,28 +7,105 @@
 
 package sip
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"io"
+)
 
 // A Message defines a request sent by the SC to the ACS, or the response
 // sent by the ACS to the SC. The Message Type defines which kind it is.
 type Message struct {
+	// TODO make theese unexported when getters/setters done
 	Type              msgType
 	Fields            map[fieldType]string
 	RepeateableFields map[fieldType][]string
 }
 
-/*
+// Encode encodes a SIP messgae to a stream.
+// It will fail if there are missing required fields, or if
+// writing to the stream fails.
+// Unknown fields and defined fields which are not required or
+// optional for the give type are not encoded.
+func (m Message) Encode(w io.Writer) error {
+	bw := bufio.NewWriter(w)
+	if _, err := bw.WriteString(msgToCode[m.Type]); err != nil {
+		return err
+	}
 
-// Valid returns true if Message is valid. That is, if the Type is not MsgUnknown, and
-// all the required fields are present. It does not validate that the contents of
-// the fields conforms to expected patterns; use Validate() for that.
-func (m Message) Valid() bool                  { return false }
-func (m Message) Field(t fieldType) []string   { return nil }
-func (m Message) HasField(t fieldType) bool    { return false }
-func (m Message) MustField(t fieldType) string { return "" }
-func (m Message) Encode(w io.Writer) error     { return nil }
+	for _, f := range msgDefinitions[m.Type].RequiredFixed {
+		if !m.hasField(f) {
+			return fmt.Errorf("missing required fixed-length field: %v", f)
+		}
 
-*/
+		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+			return err
+		}
+	}
+
+	for _, f := range msgDefinitions[m.Type].RequiredVar {
+		if !m.hasField(f) { // TODO leave out?
+			return fmt.Errorf("missing required variable-length field: %v", f)
+		}
+
+		if _, err := bw.WriteString(fieldToCode[f]); err != nil {
+			return err
+		}
+
+		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+			return err
+		}
+
+		if _, err := bw.WriteRune('|'); err != nil {
+			return err
+		}
+	}
+
+	for _, f := range msgDefinitions[m.Type].OptionalVar {
+		if !m.hasField(f) {
+			continue
+		}
+
+		if _, err := bw.WriteString(fieldToCode[f]); err != nil {
+			return err
+		}
+
+		if _, err := bw.WriteString(m.Fields[f]); err != nil {
+			return err
+		}
+
+		if _, err := bw.WriteRune('|'); err != nil {
+			return err
+		}
+	}
+
+	for f, fs := range m.RepeateableFields {
+		if !isOptional(m.Type, f) {
+			continue
+		}
+
+		for _, s := range fs {
+			if _, err := bw.WriteString(fieldToCode[f]); err != nil {
+				return err
+			}
+
+			if _, err := bw.WriteString(s); err != nil {
+				return err
+			}
+
+			if _, err := bw.WriteRune('|'); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if _, err := bw.WriteRune('\r'); err != nil {
+		return err
+	}
+
+	return bw.Flush()
+}
 
 func (m Message) hasField(f fieldType) bool {
 	_, ok := m.Fields[f]
