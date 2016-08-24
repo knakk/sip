@@ -42,7 +42,7 @@ func NewMessage(f msgType) Message {
 
 // AddField adds a field to the Message. If the field is not repeatable, it
 // will overwrite any existing value for the field.
-func (m Message) AddField(fs ...Field) {
+func (m Message) AddField(fs ...Field) Message {
 	for _, f := range fs {
 		if repeatableField[f.Type] {
 			m.repeateableFields[f.Type] = append(m.repeateableFields[f.Type], f.Value)
@@ -50,6 +50,7 @@ func (m Message) AddField(fs ...Field) {
 			m.fields[f.Type] = f.Value
 		}
 	}
+	return m
 }
 
 /* TODO
