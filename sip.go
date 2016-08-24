@@ -9,6 +9,7 @@ package sip
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 )
@@ -51,6 +52,13 @@ func (m Message) AddField(fs ...Field) Message {
 		}
 	}
 	return m
+}
+
+// String encodes the SIP message to a string.
+func (m Message) String() string {
+	var b bytes.Buffer
+	m.Encode(&b)
+	return b.String()
 }
 
 /* TODO
