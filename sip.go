@@ -64,16 +64,26 @@ func (m Message) String() string {
 // Field returns the value of a field. An undefined field
 // returns an empty string. There is no way of knowing if
 // the string is defined or not. Use FieldOK for that.
-// TODO return first of repeatable field?
+// If the field is repeatable and several are defined,
+// only one of them will be returned
 func (m Message) Field(f fieldType) string {
+	if repeatableField[f] && len(m.repeateableFields[f]) > 0 {
+		return m.repeateableFields[f][0]
+	}
 	return m.fields[f]
 }
 
 // FieldFound returns the value of a field, along with a boolean stating if
-// the field is defined or not.
-// TODO return first of repeatable field?
+// the field is defined or not. If the field is repeatable and several are
+// defined, only one of them will be returned
 func (m Message) FieldOK(f fieldType) (string, bool) {
 	v, ok := m.fields[f]
+	if !ok && repeatableField[f] {
+		if len(m.repeateableFields[f]) > 0 {
+			v = m.repeateableFields[f][0]
+			ok = true
+		}
+	}
 	return v, ok
 }
 
