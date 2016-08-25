@@ -373,4 +373,6 @@ const (
 	FieldValidPatronPassword   // CQ
 	FieldSequenceNumber        // AY
 	FieldChecksum              // AZ
+	FieldDestinationLocation   // CT (SIP3)
+	FieldAlertType             // CV (SIP3)
 )
