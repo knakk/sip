@@ -61,10 +61,30 @@ func (m Message) String() string {
 	return b.String()
 }
 
-/* TODO
-func (m Message) Field(f fieldType) (string, bool) { return "", false }
-func (m Message) Fields(f fieldType) []string      { return nil }
-*/
+// Field returns the value of a field. An undefined field
+// returns an empty string. There is no way of knowing if
+// the string is defined or not. Use FieldOK for that.
+// TODO return first of repeatable field?
+func (m Message) Field(f fieldType) string {
+	return m.fields[f]
+}
+
+// FieldFound returns the value of a field, along with a boolean stating if
+// the field is defined or not.
+// TODO return first of repeatable field?
+func (m Message) FieldOK(f fieldType) (string, bool) {
+	v, ok := m.fields[f]
+	return v, ok
+}
+
+// Fields returns the values defined for a reatable field, or nil if none are defined.
+func (m Message) Fields(f fieldType) []string {
+	res, ok := m.repeateableFields[f]
+	if !ok {
+		return nil
+	}
+	return res
+}
 
 // Encode encodes a SIP messgae to a stream.
 // It will fail if there are missing required fields, or if
