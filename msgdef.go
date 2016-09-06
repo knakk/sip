@@ -318,8 +318,9 @@ var (
 				FieldItemProperties,
 				FieldScreenMessage,
 				FieldPrintLine,
-				FieldDestinationLocation, // SIP3
-				FieldAlertType,           // SIP3
+				FieldDestinationLocation,  // SIP3
+				FieldAlertType,            // SIP3
+				FieldHoldPatronIdentifier, // SIP3
 			},
 		},
 		MsgRespStatus: msgDef{
@@ -820,6 +821,7 @@ var (
 		FieldChecksum:              "AZ",
 		FieldDestinationLocation:   "CT", // SIP3
 		FieldAlertType:             "CV", // SIP3
+		FieldHoldPatronIdentifier:  "CY", // SIP3
 	}
 
 	codeToField = map[string]fieldType{
@@ -882,8 +884,9 @@ var (
 		"CQ": FieldValidPatronPassword,
 		"AY": FieldSequenceNumber,
 		"AZ": FieldChecksum,
-		"CT": FieldDestinationLocation, // SIP3
-		"CV": FieldAlertType,           // SIP3
+		"CT": FieldDestinationLocation,  // SIP3
+		"CV": FieldAlertType,            // SIP3
+		"CY": FieldHoldPatronIdentifier, // SIP3
 	}
 )
 
