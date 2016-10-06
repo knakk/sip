@@ -321,6 +321,7 @@ var (
 				FieldDestinationLocation,  // SIP3
 				FieldAlertType,            // SIP3
 				FieldHoldPatronIdentifier, // SIP3
+				FieldSequenceNumber,       // Koha SIP server hack: biblionumber
 			},
 		},
 		MsgRespStatus: msgDef{
