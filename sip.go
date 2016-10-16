@@ -97,43 +97,53 @@ func (m Message) Fields(f fieldType) []string {
 }
 
 // Encode encodes a SIP messgae to a stream.
-// It will fail if there are missing required fields, or if
+// It will fail if there are missing required fixed length fields, or if
 // writing to the stream fails.
 // Unknown fields and defined fields which are not required or
 // optional for the give type are not encoded.
-func (m Message) Encode(w io.Writer) error {
+// It returns the number of bytes written, and an error if it failed.
+func (m Message) Encode(w io.Writer) (int, error) {
+	total := 0
 	bw := bufio.NewWriter(w)
 	if _, err := bw.WriteString(msgToCode[m.typ]); err != nil {
-		return err
+		return total, err
 	}
+	total += 2
 
 	for _, f := range msgDefinitions[m.typ].RequiredFixed {
 		if !m.hasField(f) {
-			return fmt.Errorf("missing required fixed-length field: %v", f)
+			return total, fmt.Errorf("missing required fixed-length field: %v", f)
 		}
 
-		if _, err := bw.WriteString(m.fields[f]); err != nil {
-			return err
+		n, err := bw.WriteString(m.fields[f])
+		if err != nil {
+			return total, err
 		}
+		total += n
 	}
 
 	for _, f := range msgDefinitions[m.typ].RequiredVar {
-		if !m.hasField(f) { // TODO leave out?
-			//return fmt.Errorf("missing required variable-length field: %v", f)
+		if !m.hasField(f) {
+			// Required field is missing. To generate a valid message, we add it,
+			// with an empty value.
 			m.AddField(Field{Type: f, Value: ""})
 		}
 
 		if _, err := bw.WriteString(fieldToCode[f]); err != nil {
-			return err
+			return total, err
 		}
+		total += 2
 
-		if _, err := bw.WriteString(m.fields[f]); err != nil {
-			return err
+		n, err := bw.WriteString(m.fields[f])
+		if err != nil {
+			return total, err
 		}
+		total += n
 
 		if _, err := bw.WriteRune('|'); err != nil {
-			return err
+			return total, err
 		}
+		total++
 	}
 
 	for _, f := range msgDefinitions[m.typ].OptionalVar {
@@ -142,16 +152,20 @@ func (m Message) Encode(w io.Writer) error {
 		}
 
 		if _, err := bw.WriteString(fieldToCode[f]); err != nil {
-			return err
+			return total, err
 		}
+		total += 2
 
-		if _, err := bw.WriteString(m.fields[f]); err != nil {
-			return err
+		n, err := bw.WriteString(m.fields[f])
+		if err != nil {
+			return total, err
 		}
+		total += n
 
 		if _, err := bw.WriteRune('|'); err != nil {
-			return err
+			return total, err
 		}
+		total++
 	}
 
 	for f, fs := range m.repeateableFields {
@@ -161,25 +175,30 @@ func (m Message) Encode(w io.Writer) error {
 
 		for _, s := range fs {
 			if _, err := bw.WriteString(fieldToCode[f]); err != nil {
-				return err
+				return total, err
 			}
+			total += 2
 
-			if _, err := bw.WriteString(s); err != nil {
-				return err
+			n, err := bw.WriteString(s)
+			if err != nil {
+				return total, err
 			}
+			total += n
 
 			if _, err := bw.WriteRune('|'); err != nil {
-				return err
+				return total, err
 			}
+			total++
 		}
 
 	}
 
 	if _, err := bw.WriteRune('\r'); err != nil {
-		return err
+		return total, err
 	}
+	total++
 
-	return bw.Flush()
+	return total, bw.Flush()
 }
 
 func (m Message) hasField(f fieldType) bool {

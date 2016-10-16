@@ -150,8 +150,9 @@ func TestDecodeErrors(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	tests := []struct {
-		msg  Message
-		want string
+		msg      Message
+		want     string
+		wantSize int
 	}{
 		{
 			Message{
@@ -174,17 +175,22 @@ func TestEncode(t *testing.T) {
 				},
 			},
 			"101YNY20160822    153450AO|ABix:1544245,1|AQ|AJHellström, Jenny : Sy! Urban collection [Bok]|AAxyz|AF|\r",
+			104,
 		},
 	}
 
 	for i, tt := range tests {
 		var b bytes.Buffer
-		if err := tt.msg.Encode(&b); err != nil {
+		size, err := tt.msg.Encode(&b)
+		if err != nil {
 			t.Errorf("%d: encode failed: %v", i, err)
 			continue
 		}
 		if b.String() != tt.want {
 			t.Errorf("%d: got:\n%q\nwant:\n%q", i, b.String(), tt.want)
+		}
+		if size != tt.wantSize {
+			t.Errorf("%d: got size:\n%d\nwant:\n%d", i, size, tt.wantSize)
 		}
 	}
 }
