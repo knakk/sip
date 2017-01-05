@@ -824,6 +824,7 @@ var (
 		FieldDestinationLocation:   "CT", // SIP3
 		FieldAlertType:             "CV", // SIP3
 		FieldHoldPatronIdentifier:  "CY", // SIP3
+		FieldPatronBirthDate:       "PB", // SIP3
 	}
 
 	codeToField = map[string]fieldType{
@@ -889,6 +890,7 @@ var (
 		"CT": FieldDestinationLocation,  // SIP3
 		"CV": FieldAlertType,            // SIP3
 		"CY": FieldHoldPatronIdentifier, // SIP3
+		"PB": FieldPatronBirthDate,      // SIP3
 	}
 )
 
