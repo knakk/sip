@@ -387,6 +387,7 @@ var (
 				FieldHomePhoneNumber,
 				FieldScreenMessage,
 				FieldPrintLine,
+				FieldPatronBirthDate,
 			},
 		},
 		MsgRespEndPatronSession: msgDef{

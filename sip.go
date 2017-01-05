@@ -411,4 +411,5 @@ const (
 	FieldDestinationLocation   // CT (SIP3)
 	FieldAlertType             // CV (SIP3)
 	FieldHoldPatronIdentifier  // CY (SIP3)
+	FieldPatronBirthDate       // PB (SIP3)
 )
