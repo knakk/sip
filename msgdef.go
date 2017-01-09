@@ -321,6 +321,7 @@ var (
 				FieldDestinationLocation,  // SIP3
 				FieldAlertType,            // SIP3
 				FieldHoldPatronIdentifier, // SIP3
+				FieldCallNumber,           // SIP3
 				FieldSequenceNumber,       // Koha SIP server hack: biblionumber
 			},
 		},
@@ -443,6 +444,7 @@ var (
 				FieldItemProperties,
 				FieldScreenMessage,
 				FieldPrintLine,
+				FieldCallNumber,
 			},
 		},
 		MsgRespItemStatusUpdate: msgDef{
@@ -825,6 +827,7 @@ var (
 		FieldAlertType:             "CV", // SIP3
 		FieldHoldPatronIdentifier:  "CY", // SIP3
 		FieldPatronBirthDate:       "PB", // SIP3
+		FieldCallNumber:            "CS", // SIP3
 	}
 
 	codeToField = map[string]fieldType{
@@ -891,6 +894,7 @@ var (
 		"CV": FieldAlertType,            // SIP3
 		"CY": FieldHoldPatronIdentifier, // SIP3
 		"PB": FieldPatronBirthDate,      // SIP3
+		"CS": FieldCallNumber,           // SIP3
 	}
 )
 

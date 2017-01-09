@@ -412,4 +412,5 @@ const (
 	FieldAlertType             // CV (SIP3)
 	FieldHoldPatronIdentifier  // CY (SIP3)
 	FieldPatronBirthDate       // PB (SIP3)
+	FieldCallNumber            // CS (SIP3)
 )
