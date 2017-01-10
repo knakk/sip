@@ -318,10 +318,10 @@ var (
 				FieldItemProperties,
 				FieldScreenMessage,
 				FieldPrintLine,
-				FieldDestinationLocation,  // SIP3
 				FieldAlertType,            // SIP3
-				FieldHoldPatronIdentifier, // SIP3
 				FieldCallNumber,           // SIP3
+				FieldDestinationLocation,  // SIP3
+				FieldHoldPatronIdentifier, // SIP3
 				FieldSequenceNumber,       // Koha SIP server hack: biblionumber
 			},
 		},
