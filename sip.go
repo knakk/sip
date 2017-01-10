@@ -46,7 +46,7 @@ func (m Message) Type() msgType {
 	return m.typ
 }
 
-// AddField adds a field to the Message. If the field is not repeatable, it
+// AddField adds one or more fields to the Message. If a field is not repeatable, it
 // will overwrite any existing value for the field.
 func (m Message) AddField(fs ...Field) Message {
 	for _, f := range fs {
@@ -54,6 +54,19 @@ func (m Message) AddField(fs ...Field) Message {
 			m.repeateableFields[f.Type] = append(m.repeateableFields[f.Type], f.Value)
 		} else {
 			m.fields[f.Type] = f.Value
+		}
+	}
+	return m
+}
+
+// RmField removes one or more fields from Message. If a field is repeatable,
+// all occourences will be removed
+func (m Message) RmField(fs ...fieldType) Message {
+	for _, f := range fs {
+		if repeatableField[f] {
+			delete(m.repeateableFields, f)
+		} else {
+			delete(m.fields, f)
 		}
 	}
 	return m
