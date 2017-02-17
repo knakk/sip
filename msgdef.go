@@ -695,6 +695,7 @@ var (
 		FieldFineItems:             true,
 		FieldRecallItems:           true,
 		FieldUnavailableHoldsItems: true,
+		FieldItemProperties:        true,
 	}
 
 	msgToCode = map[msgType]string{
